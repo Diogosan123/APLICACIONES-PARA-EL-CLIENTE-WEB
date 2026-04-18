@@ -1,0 +1,194 @@
+/* Importamos una fuente moderna y elegante de Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+/* Configuración General y Reset suave */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    line-height: 1.6;
+    padding: 40px 20px;
+}
+
+/* Contenedor Principal (Efecto Tarjeta Flotante) */
+.main-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 50px;
+    border-radius: 16px; /* Bordes más suaves */
+    box-shadow: 0 15px 35px rgba(44, 62, 80, 0.08); /* Sombra más amplia y elegante */
+    transition: transform 0.3s ease;
+}
+
+/* Encabezado */
+.header-section {
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid rgba(52, 152, 219, 0.2); /* Línea más sutil */
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+    gap: 30px; /* Espaciado moderno entre foto y texto */
+}
+
+/* Animación y estilo de la foto */
+.photo-container img {
+    border-radius: 50%;
+    border: 4px solid #fff; /* Borde blanco interno */
+    box-shadow: 0 0 0 4px #3498db, 0 10px 20px rgba(0,0,0,0.1); /* Doble borde y sombra */
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.photo-container img:hover {
+    transform: scale(1.05) rotate(3deg); /* Pequeño efecto al pasar el mouse */
+    box-shadow: 0 0 0 4px #2c3e50, 0 15px 25px rgba(0,0,0,0.15);
+}
+
+/* Texto del Encabezado */
+.personal-info h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
+}
+
+.personal-info p {
+    font-size: 1.05rem;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.personal-info strong {
+    color: #3498db; /* Destacamos las etiquetas con tu color primario */
+}
+
+/* Cajas de Contenido */
+.content-box {
+    margin-bottom: 35px;
+    animation: fadeIn 0.6s ease-out; /* Animación de entrada */
+}
+
+.content-box h2 {
+    background-color: #ecf0f1;
+    color: #2c3e50;
+    padding: 12px 20px;
+    border-radius: 8px; /* Fondo redondeado */
+    border-left: 6px solid #3498db;
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    display: inline-block; /* Hace que el fondo se ajuste al texto */
+    width: 100%;
+}
+
+/* Listas y textos de contenido */
+.content-box ul {
+    list-style-type: none;
+    padding-left: 10px;
+}
+
+.content-box ul li {
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 12px;
+}
+
+/* Viñetas personalizadas azules */
+.content-box ul li::before {
+    content: "•";
+    color: #3498db;
+    font-size: 1.5rem;
+    position: absolute;
+    left: 0;
+    top: -4px;
+}
+
+.job h3 {
+    color: #2c3e50;
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.job em {
+    color: #888;
+    font-size: 0.95rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* Estilo de la Tabla (Diseño Ultra Moderno) */
+table {
+    width: 100%;
+    border-collapse: separate; /* Permite redondear bordes de tabla */
+    border-spacing: 0;
+    margin-top: 15px;
+    border-radius: 10px;
+    overflow: hidden; /* Corta las esquinas para el border-radius */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+th {
+    background-color: #3498db;
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+td {
+    color: #444;
+}
+
+tr:last-child td {
+    border-bottom: none; /* Quita el borde de la última fila */
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover td {
+    background-color: #ecf0f1; /* Efecto hover en las filas de la tabla */
+    transition: background-color 0.3s ease;
+}
+
+/* Diseño Responsivo (Para celulares) */
+@media (max-width: 768px) {
+    .header-section {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .personal-info h1 {
+        font-size: 2rem;
+    }
+    
+    /* Para que la tabla no se rompa en móviles */
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+/* Animación simple de carga */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
