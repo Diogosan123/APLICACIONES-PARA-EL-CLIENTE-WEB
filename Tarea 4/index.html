@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarea 4 - Bucle de Operaciones</title>
+    <style>
+        /* --- Reset y configuración base --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* Fondo con degradado moderno */
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* --- Contenedor Principal (La Tarjeta) --- */
+        .calculadora-card {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 450px;
+            padding: 35px 30px;
+            border-radius: 16px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .titulo {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 1.6rem;
+        }
+
+        /* --- Inputs y Labels --- */
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #555;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: #f9f9fa;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #2a5298;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.15);
+        }
+
+        /* --- Botón --- */
+        .btn-calcular {
+            width: 100%;
+            padding: 14px;
+            background: #2a5298;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            margin-top: 10px;
+        }
+
+        .btn-calcular:hover {
+            background: #1e3c72;
+        }
+
+        .btn-calcular:active {
+            transform: scale(0.98);
+        }
+
+        /* --- Área de Resultados --- */
+        #area-resultados {
+            margin-top: 30px;
+            display: none; /* Se oculta hasta que se presione el botón */
+            animation: aparecer 0.5s ease-out;
+        }
+
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .titulo-resultados {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .lista-resultados {
+            list-style: none;
+        }
+
+        /* Diseño de cada ítem de la lista */
+        .item-resultado {
+            background-color: #ffffff;
+            border: 1px solid #eee;
+            border-left: 5px solid #ccc;
+            padding: 12px 15px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            transition: transform 0.2s ease;
+        }
+
+        .item-resultado:hover {
+            transform: translateX(5px);
+        }
+
+        .item-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .iteracion-num {
+            font-size: 0.75rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .operacion-nombre {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .resultado-valor {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        
+        /* Colores del borde izquierdo según la operación */
+        .color-suma { border-left-color: #27ae60; }      /* Verde */
+        .color-resta { border-left-color: #e74c3c; }     /* Rojo */
+        .color-mult { border-left-color: #2980b9; }      /* Azul */
+        .color-div { border-left-color: #f39c12; }       /* Naranja */
+        .color-mod { border-left-color: #8e44ad; }       /* Morado */
+    </style>
+</head>
+<body>
+
+    <div class="calculadora-card">
+        <h2 class="titulo">Calculadora de 5 Ciclos</h2>
+        
+        <div class="input-group">
+            <label for="numero1">Primer número:</label>
+            <input type="number" id="numero1" placeholder="Ej: 15" required>
+        </div>
+
+        <div class="input-group">
+            <label for="numero2">Segundo número:</label>
+            <input type="number" id="numero2" placeholder="Ej: 4" required>
+        </div>
+
+        <button class="btn-calcular" onclick="ejecutarBucle()">Calcular Resultados</button>
+
+        <div id="area-resultados">
+            <h3 class="titulo-resultados">Resultados del Bucle:</h3>
+            <ul class="lista-resultados" id="lista-resultados">
+                </ul>
+        </div>
+    </div>
+
+    <script>
+        function ejecutarBucle() {
+            let num1 = parseFloat(document.getElementById('numero1').value);
+            let num2 = parseFloat(document.getElementById('numero2').value);
+            let areaResultados = document.getElementById('area-resultados');
+            let listaResultados = document.getElementById('lista-resultados');
+            
+            // Validamos que los campos no estén vacíos
+            if (isNaN(num1) || isNaN(num2)) {
+                alert("Por favor, ingresa dos números válidos.");
+                return;
+            }
+
+            // Limpiamos resultados anteriores por si el usuario vuelve a calcular
+            listaResultados.innerHTML = "";
+
+            // Bucle de 5 iteraciones
+            for (let i = 1; i <= 5; i++) {
+                let resultadoOperacion;
+                let nombreOperacion;
+                let claseColor;
+
+                // Evaluamos la iteración
+                switch(i) {
+                    case 1:
+                        resultadoOperacion = num1 + num2;
+                        nombreOperacion = "Suma";
+                        claseColor = "color-suma";
+                        break;
+                    case 2:
+                        resultadoOperacion = num1 - num2;
+                        nombreOperacion = "Resta";
+                        claseColor = "color-resta";
+                        break;
+                    case 3:
+                        resultadoOperacion = num1 * num2;
+                        nombreOperacion = "Multiplicación";
+                        claseColor = "color-mult";
+                        break;
+                    case 4:
+                        resultadoOperacion = (num2 !== 0) ? (num1 / num2).toFixed(2) : "Error (÷0)";
+                        nombreOperacion = "División";
+                        claseColor = "color-div";
+                        break;
+                    case 5:
+                        resultadoOperacion = (num2 !== 0) ? (num1 % num2).toFixed(2) : "Error (÷0)";
+                        nombreOperacion = "Módulo (%)";
+                        claseColor = "color-mod";
+                        break;
+                }
+
+                // Creamos el elemento HTML para cada iteración y le damos las clases de CSS
+                let itemHTML = `
+                    <li class="item-resultado ${claseColor}">
+                        <div class="item-info">
+                            <span class="iteracion-num">Iteración ${i}</span>
+                            <span class="operacion-nombre">${nombreOperacion}</span>
+                        </div>
+                        <span class="resultado-valor">${resultadoOperacion}</span>
+                    </li>
+                `;
+                
+                // Lo añadimos a la lista
+                listaResultados.innerHTML += itemHTML;
+            }
+            
+            // Mostramos el contenedor con una pequeña animación
+            areaResultados.style.display = "block";
+        }
+    </script>
+
+</body>
+</html>
