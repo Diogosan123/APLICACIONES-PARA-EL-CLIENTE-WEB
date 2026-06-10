@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de Estudiantes</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="page">
+    <header class="app-header">
+      <div class="header-content">
+        <div class="logo" aria-hidden="true">RE</div>
+        <div>
+          <p class="subtitle">Sistema académico</p>
+          <h1>Registro de Estudiantes</h1>
+        </div>
+      </div>
+      <div class="header-badge">
+        <span id="headerCount">0</span>
+        <small>registrados</small>
+      </div>
+    </header>
+
+    <section class="layout" aria-label="Registro y consulta de estudiantes">
+      <form class="panel form-panel" id="studentForm" novalidate>
+        <div class="panel-title">
+          <div>
+            <h2 id="formTitle">Nuevo estudiante</h2>
+            <p>Complete todos los campos para guardar el registro en este navegador.</p>
+          </div>
+          <button class="button button-light hidden" type="button" id="cancelEditButton">Cancelar</button>
+        </div>
+
+        <input type="hidden" id="editingId">
+
+        <div class="form-grid">
+          <label class="field">
+            <span>Cédula</span>
+            <input id="cedula" type="text" maxlength="10" inputmode="numeric" placeholder="0102030400">
+            <small id="cedulaError"></small>
+          </label>
+
+          <label class="field">
+            <span>Apellidos</span>
+            <input id="apellidos" type="text" placeholder="Pérez Morales">
+            <small id="apellidosError"></small>
+          </label>
+
+          <label class="field">
+            <span>Nombres</span>
+            <input id="nombres" type="text" placeholder="Ana Belén">
+            <small id="nombresError"></small>
+          </label>
+
+          <label class="field field-wide">
+            <span>Dirección</span>
+            <input id="direccion" type="text" placeholder="Av. Principal y Calle Secundaria">
+            <small id="direccionError"></small>
+          </label>
+
+          <label class="field">
+            <span>Teléfono</span>
+            <input id="telefono" type="tel" maxlength="10" inputmode="tel" placeholder="0991234567">
+            <small id="telefonoError"></small>
+          </label>
+
+          <label class="field">
+            <span>Correo electrónico</span>
+            <input id="correo" type="email" placeholder="estudiante@correo.com">
+            <small id="correoError"></small>
+          </label>
+
+          <label class="field">
+            <span>Facultad</span>
+            <select id="facultad">
+              <option value="">Seleccione</option>
+              <option value="Facultad de Administración">Facultad de Administración</option>
+              <option value="Facultad de Arquitectura y Diseño"> Facultad de Arquitectura y Diseño</option>
+              <option value="Facultad de Ciencias de la Educación">Facultad de Ciencias de la Educación</option>
+              <option value="Facultad de Ingeniería">Facultad de Ingeniería</option>
+              <option value="Facultad de Salud">Facultad de Salud</option>
+              <option value="Facultad de Ciencias de la Vida">Facultad de Ciencias de la Vida</option>
+            </select>
+            <small id="facultadError"></small>
+          </label>
+
+          <label class="field">
+            <span>Nivel</span>
+            <select id="nivel">
+              <option value="">Seleccione</option>
+              <option value="1">Primer nivel</option>
+              <option value="2">Segundo nivel</option>
+              <option value="3">Tercer nivel</option>
+              <option value="4">Cuarto nivel</option>
+              <option value="5">Quinto nivel</option>
+              <option value="6">Sexto nivel</option>
+              <option value="7">Séptimo nivel</option>
+              <option value="8">Octavo nivel</option>
+              <option value="9">Noveno nivel</option>
+              <option value="10">Décimo nivel</option>
+            </select>
+            <small id="nivelError"></small>
+          </label>
+
+          <label class="field">
+            <span>Paralelo</span>
+            <select id="paralelo">
+              <option value="">Seleccione</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+              <option value="D">D</option>
+            </select>
+            <small id="paraleloError"></small>
+          </label>
+        </div>
+
+        <div class="actions">
+          <button class="button button-primary" type="submit" id="submitButton">Guardar estudiante</button>
+          <button class="button button-light" type="reset">Limpiar</button>
+        </div>
+      </form>
+
+      <section class="panel records-panel" aria-labelledby="recordsTitle">
+        <div class="panel-title records-title">
+          <div>
+            <h2 id="recordsTitle">Listado de estudiantes</h2>
+            <p>Los datos se almacenan como JSON en localStorage.</p>
+          </div>
+          <button class="button button-danger" type="button" id="clearAllButton">Vaciar</button>
+        </div>
+
+        <label class="search">
+          <span>Buscar estudiante</span>
+          <input id="searchInput" type="search" placeholder="Cédula, nombre, correo o facultad">
+        </label>
+
+        <div class="table-card" id="tableCard">
+          <table>
+            <thead>
+              <tr>
+                <th>Cédula</th>
+                <th>Estudiante</th>
+                <th>Contacto</th>
+                <th>Facultad</th>
+                <th>Nivel</th>
+                <th>Paralelo</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="studentsTableBody"></tbody>
+          </table>
+          <p class="empty" id="emptyState">Aún no existen estudiantes registrados.</p>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <template id="studentRowTemplate">
+    <tr>
+      <td data-label="Cédula" class="student-cedula"></td>
+      <td data-label="Estudiante">
+        <strong class="student-name"></strong>
+        <span class="student-address"></span>
+      </td>
+      <td data-label="Contacto">
+        <span class="student-phone"></span>
+        <span class="student-email"></span>
+      </td>
+      <td data-label="Facultad" class="student-faculty"></td>
+      <td data-label="Nivel" class="student-level"></td>
+      <td data-label="Paralelo" class="student-parallel"></td>
+      <td data-label="Acciones">
+        <div class="row-actions">
+          <button class="button-mini edit-button" type="button">Editar</button>
+          <button class="button-mini delete-button" type="button">Eliminar</button>
+        </div>
+      </td>
+    </tr>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
